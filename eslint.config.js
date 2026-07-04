@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // research/ holds verbatim third-party reference components — not our code
+  globalIgnores(['dist', 'research']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -23,7 +24,13 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // `motion` is used as a JSX namespace (<motion.div>) which this config
+      // (no eslint-plugin-react jsx-uses-vars) cannot see; the args pattern
+      // covers polymorphic `as: Component` destructured props.
+      'no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^[A-Z_]|^motion$', argsIgnorePattern: '^[A-Z_]' },
+      ],
     },
   },
 ])
