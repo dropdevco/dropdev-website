@@ -1,0 +1,8 @@
+/* ReactBits — Orb (Background) CSS
+   Source: https://reactbits.dev/backgrounds/orb */
+.orb-container {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
