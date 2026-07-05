@@ -5,11 +5,14 @@
  * holds while its content panel reveals, then swells past the camera and
  * fades as you leave (fly through).
  *
+ * Moons orbit the planet with a plain-language label; hovering (desktop) or
+ * tapping (mobile) a moon surfaces its one-sentence meaning in a caption.
+ *
  * Under prefers-reduced-motion the stage is not transformed at all — the
  * planet renders a single static frame and content uses plain fades.
  */
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import Orb from '../components/galaxy/Orb';
 import { OrbitingCircles } from '../components/ui/OrbitingCircles';
 import ScrollRevealText from '../components/ui/ScrollRevealText';
@@ -20,6 +23,7 @@ export default function PlanetSection({ planet, index }) {
     const sectionRef = useRef(null);
     const reduced = useReducedMotion();
     const flip = index % 2 === 1; // alternate planet side per stop
+    const [activeMoon, setActiveMoon] = useState(null); // hovered/tapped moon label
 
     const { scrollYProgress } = useScroll({
         target: sectionRef,
@@ -32,7 +36,7 @@ export default function PlanetSection({ planet, index }) {
     const contentOpacity = useTransform(scrollYProgress, [0.32, 0.44, 0.66, 0.8], [0, 1, 1, 0]);
     const contentY = useTransform(scrollYProgress, [0.32, 0.5], [70, 0]);
 
-    const num = String(index + 1).padStart(2, '0');
+    const activeMeaning = planet.moons.find((m) => m.label === activeMoon)?.meaning;
 
     return (
         <section ref={sectionRef} id={planet.id} className={cn(!reduced && 'h-[220vh]', 'relative')}>
@@ -53,24 +57,27 @@ export default function PlanetSection({ planet, index }) {
                         style={reduced ? undefined : { scale: orbScale, opacity: orbOpacity }}
                         className="relative mx-auto aspect-square w-56 sm:w-72 md:w-[min(40vw,480px)] md:[direction:ltr]"
                     >
-                        {/* Giant index numeral floating behind the planet */}
-                        <span
-                            aria-hidden="true"
-                            className="absolute -top-8 -left-4 z-0 font-mono text-[7rem] leading-none font-medium text-white/5 select-none md:text-[10rem]"
-                        >
-                            {num}
-                        </span>
                         <Orb hue={planet.hue} paused={reduced} forceHoverState={false} />
-                        {/* Moons — the sub-capabilities orbiting this planet (desktop) */}
+                        {/* Moons — orbit the planet (desktop); hover reveals meaning */}
                         <div className="hidden md:contents">
-                            <OrbitingCircles radius={185} duration={26} iconSize={32} path>
+                            <OrbitingCircles radius={185} duration={26} iconSize={40} path>
                                 {planet.moons.map((moon) => (
-                                    <span
-                                        key={moon}
-                                        className="rounded-full border border-hairline bg-space/90 px-3 py-1 font-mono text-[10px] tracking-wider whitespace-nowrap text-white/70 uppercase backdrop-blur-sm"
+                                    <button
+                                        type="button"
+                                        key={moon.label}
+                                        onMouseEnter={() => setActiveMoon(moon.label)}
+                                        onMouseLeave={() => setActiveMoon((cur) => (cur === moon.label ? null : cur))}
+                                        onFocus={() => setActiveMoon(moon.label)}
+                                        onBlur={() => setActiveMoon((cur) => (cur === moon.label ? null : cur))}
+                                        className={cn(
+                                            'pointer-events-auto cursor-default rounded-full border px-3 py-1 font-mono text-[10px] tracking-wider whitespace-nowrap uppercase backdrop-blur-sm transition-colors',
+                                            activeMoon === moon.label
+                                                ? 'border-hairline-accent bg-accent-deep/20 text-white'
+                                                : 'border-hairline bg-space/90 text-white/70 hover:text-white'
+                                        )}
                                     >
-                                        {moon}
-                                    </span>
+                                        {moon.label}
+                                    </button>
                                 ))}
                             </OrbitingCircles>
                         </div>
@@ -86,7 +93,7 @@ export default function PlanetSection({ planet, index }) {
                                 className="mb-4 font-mono text-[11px] tracking-[0.3em] uppercase"
                                 style={{ color: planet.accent }}
                             >
-                                {planet.label}
+                                {planet.kicker}
                             </p>
                             <h2 className="mb-6 text-4xl font-medium tracking-tight text-balance sm:text-5xl lg:text-6xl">
                                 {planet.title}
@@ -94,16 +101,58 @@ export default function PlanetSection({ planet, index }) {
                             <ScrollRevealText className="max-w-lg text-lg leading-relaxed text-white/55 sm:text-xl">
                                 {planet.description}
                             </ScrollRevealText>
-                            {/* Moons as static chips on mobile */}
-                            <ul className="mt-8 flex flex-wrap gap-2 md:hidden">
-                                {planet.moons.map((moon) => (
-                                    <li
-                                        key={moon}
-                                        className="rounded-full border border-hairline bg-white/3 px-3 py-1 font-mono text-[10px] tracking-wider text-white/70 uppercase"
-                                    >
-                                        {moon}
-                                    </li>
-                                ))}
+
+                            {/* Moon-meaning caption (desktop): swaps to the hovered moon */}
+                            <div className="mt-6 hidden min-h-[2.5rem] max-w-md md:block">
+                                <AnimatePresence mode="wait">
+                                    {activeMeaning && (
+                                        <motion.p
+                                            key={activeMoon}
+                                            initial={{ opacity: 0, y: 6 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -6 }}
+                                            transition={{ duration: 0.25 }}
+                                            className="border-l border-hairline-accent pl-3 text-sm leading-relaxed text-white/60"
+                                        >
+                                            <span className="font-mono text-[11px] tracking-wider text-accent uppercase">
+                                                {activeMoon}
+                                            </span>
+                                            <br />
+                                            {activeMeaning}
+                                        </motion.p>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Moons as tappable chips on mobile — tap expands meaning inline */}
+                            <ul className="mt-8 flex flex-col gap-2 md:hidden">
+                                {planet.moons.map((moon) => {
+                                    const open = activeMoon === moon.label;
+                                    return (
+                                        <li key={moon.label}>
+                                            <button
+                                                type="button"
+                                                onClick={() => setActiveMoon(open ? null : moon.label)}
+                                                aria-expanded={open}
+                                                className={cn(
+                                                    'w-full rounded-xl border px-3 py-2 text-left transition-colors',
+                                                    open
+                                                        ? 'border-hairline-accent bg-accent-deep/10'
+                                                        : 'border-hairline bg-white/3'
+                                                )}
+                                            >
+                                                <span className="font-mono text-[10px] tracking-wider text-white/70 uppercase">
+                                                    {moon.label}
+                                                </span>
+                                                {open && (
+                                                    <span className="mt-1 block text-[13px] leading-relaxed text-white/55">
+                                                        {moon.meaning}
+                                                    </span>
+                                                )}
+                                            </button>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </Reveal>
                     </motion.div>

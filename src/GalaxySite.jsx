@@ -1,27 +1,22 @@
 /*
  * Drop Dev — the galaxy scrollytelling site.
  *
- * One master scroll-progress value (0→1 over the whole page) is the source
- * of truth for the camera. It is written imperatively into `controls` (a
- * mutable ref read by the WebGL render loop every frame):
- *   flight — page progress: advances the star layers (flying through space)
- *   warp   — smoothed scroll velocity: speeds the field up while you move
+ * One master scroll-progress value (0→1 over the whole page) is the source of
+ * truth for the camera. It is written imperatively into `controls` (a mutable
+ * ref read by the WebGL render loop every frame):
+ *   flight — page progress: advances the star layers (gliding through space)
  *   hue    — drifts star color deeper into violet→cyan as you travel
  *
+ * A preloader gates the first paint and picks a quality tier from an FPS probe.
  * prefers-reduced-motion (or missing WebGL) swaps the animated galaxy for a
  * calm static starfield and disables all camera transforms downstream.
  */
-import { useRef, useState } from 'react';
-import {
-    motion,
-    useScroll,
-    useVelocity,
-    useSpring,
-    useMotionValueEvent,
-    useReducedMotion,
-} from 'motion/react';
+import { useCallback, useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'motion/react';
 import Galaxy from './components/galaxy/Galaxy';
 import StaticStars from './components/galaxy/StaticStars';
+import Meteors from './components/galaxy/Meteors';
+import Preloader from './components/Preloader';
 import Nav from './sections/Nav';
 import Hero from './sections/Hero';
 import PlanetSection from './sections/PlanetSection';
@@ -42,19 +37,21 @@ function supportsWebGL() {
 export default function GalaxySite() {
     const reduced = useReducedMotion();
     const [webgl] = useState(supportsWebGL);
-    const controls = useRef({ flight: 0, warp: 0, hue: 140 });
+    const [ready, setReady] = useState(false);
+    const [quality, setQuality] = useState('high');
+    const controls = useRef({ flight: 0, hue: 140 });
 
     const { scrollYProgress } = useScroll();
-    const velocity = useVelocity(scrollYProgress);
-    const smoothVelocity = useSpring(velocity, { stiffness: 120, damping: 30 });
 
     useMotionValueEvent(scrollYProgress, 'change', (v) => {
         controls.current.flight = v;
         controls.current.hue = 140 + v * 80; // violet drifting toward cyan
     });
-    useMotionValueEvent(smoothVelocity, 'change', (v) => {
-        controls.current.warp = Math.min(Math.abs(v) * 3, 2.5);
-    });
+
+    const handleReady = useCallback((tier) => {
+        setQuality(tier);
+        setReady(true);
+    }, []);
 
     const animatedGalaxy = webgl && !reduced;
 
@@ -62,10 +59,17 @@ export default function GalaxySite() {
         <div id="top" className="relative min-h-screen bg-space text-white">
             {/* The galaxy — always present behind everything */}
             <div className="fixed inset-0 z-0" aria-hidden="true">
-                {animatedGalaxy ? <Galaxy controlsRef={controls} /> : <StaticStars />}
+                {animatedGalaxy ? (
+                    <Galaxy key={quality} controlsRef={controls} quality={quality} />
+                ) : (
+                    <StaticStars />
+                )}
                 {/* Soft vignette to keep content legible over the stars */}
                 <div className="absolute inset-0 bg-radial from-transparent via-transparent to-space/80" />
             </div>
+
+            {/* Interactive meteor layer (above content for clickability, never blocks scroll) */}
+            <Meteors />
 
             {/* Scroll progress — thin violet flight-path line */}
             <motion.div
@@ -85,6 +89,10 @@ export default function GalaxySite() {
                 <IndustriesBelt />
                 <Arrival />
             </main>
+
+            <AnimatePresence>
+                {!ready && <Preloader key="preloader" onReady={handleReady} />}
+            </AnimatePresence>
         </div>
     );
 }

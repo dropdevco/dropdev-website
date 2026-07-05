@@ -232,7 +232,7 @@ export default function Orb({
 
         function resize() {
             if (!container) return;
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
             const width = container.clientWidth;
             const height = container.clientHeight;
             renderer.setSize(width * dpr, height * dpr);

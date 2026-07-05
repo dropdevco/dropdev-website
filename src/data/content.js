@@ -1,27 +1,54 @@
 // Real Drop Dev copy — carried over from the previous site (src/pages/Home.jsx)
 // and reused verbatim per the redesign brief.
 
-// The two focus-area "planets"
+// The two focus-area "planets". Moons carry a plain-language label plus a
+// one-sentence meaning surfaced on hover/tap.
 export const planets = [
     {
         id: 'vertical-ai',
-        label: 'Focus Area 01',
+        kicker: 'A world we build',
         title: 'Vertical AI SaaS',
         hue: 0, // violet base palette of the orb shader
         accent: '#a78bfa',
         description:
-            'Purpose-built AI solutions that understand industry-specific workflows, terminology, and compliance requirements.',
-        moons: ['Domain Expertise', 'Workflow Integration', 'Compliance-Native'],
+            'Purpose-built AI that speaks your industry — its workflows, its language, its rules — instead of a generic model bolted on.',
+        moons: [
+            {
+                label: 'Domain-trained',
+                meaning: 'Models tuned on your field’s real documents and terminology, not the open web.',
+            },
+            {
+                label: 'Fits your workflow',
+                meaning: 'Drops into the tools your team already uses — no rip-and-replace.',
+            },
+            {
+                label: 'Compliant by design',
+                meaning: 'Built to meet HIPAA, SOC 2, and industry rules from day one, not patched in later.',
+            },
+        ],
     },
     {
         id: 'marketplace',
-        label: 'Focus Area 02',
+        kicker: 'A world we build',
         title: 'Community Marketplaces',
         hue: 60, // rotates the orb palette to blue-cyan/teal (YIQ rotation, computed)
         accent: '#4cc2e9',
         description:
-            'Network-effect platforms that create value through community participation and data aggregation.',
-        moons: ['Network Effects', 'Community Trust', 'Value Loops'],
+            'Platforms that get more valuable as more people join — connecting a community and compounding on its own data.',
+        moons: [
+            {
+                label: 'Network effects',
+                meaning: 'Every new participant makes the platform more useful for everyone already on it.',
+            },
+            {
+                label: 'Earned trust',
+                meaning: 'Reputation, reviews, and verification that make strangers comfortable transacting.',
+            },
+            {
+                label: 'Compounding data',
+                meaning: 'Each interaction sharpens matching and pricing — an advantage rivals can’t buy.',
+            },
+        ],
     },
 ];
 
@@ -73,6 +100,8 @@ export const industries = [
             'AI-driven diagnostics, predictive patient outcomes, automated clinical documentation, and intelligent care pathway optimization.',
         whyItWins:
             'Regulatory moats, high switching costs, and network effects from aggregated health data create defensible positions.',
+        howWeHelp:
+            'We build HIPAA-ready document pipelines and on-prem RAG so clinical data never leaves your network — and automate the paperwork clinicians dread.',
     },
     {
         id: 2,
@@ -84,6 +113,8 @@ export const industries = [
             'Automated contract analysis, legal research acceleration, compliance monitoring, and predictive case outcome modeling.',
         whyItWins:
             'Trust-based relationships, regulatory requirements, and accumulated case knowledge create sustainable competitive advantages.',
+        howWeHelp:
+            'We deploy contract-analysis and legal-research assistants grounded in your own case files, with full citation traceability.',
     },
     {
         id: 3,
@@ -95,6 +126,8 @@ export const industries = [
             'Intelligent property valuation, predictive market analytics, automated due diligence, and personalized investment recommendations.',
         whyItWins:
             'Transaction data network effects, established trust, and integration with financial systems create strong barriers to entry.',
+        howWeHelp:
+            'We build valuation and due-diligence models, plus marketplace platforms that connect every party in a transaction.',
     },
     {
         id: 4,
@@ -106,6 +139,8 @@ export const industries = [
             'AI-powered risk assessment, automated compliance monitoring, intelligent fraud detection, and personalized financial planning.',
         whyItWins:
             'Regulatory moats, trust requirements, and financial data aggregation create winner-take-most dynamics.',
+        howWeHelp:
+            'We build risk, fraud, and compliance systems that run locally, so sensitive financial data stays inside your walls.',
     },
     {
         id: 5,
@@ -117,6 +152,8 @@ export const industries = [
             'Adaptive learning paths, intelligent tutoring systems, automated assessment, and skills gap analysis with career mapping.',
         whyItWins:
             'Learning data network effects, credentialing moats, and employer integration create defensible ecosystem value.',
+        howWeHelp:
+            'We build adaptive-learning engines and skills-mapping platforms that link learners, educators, and employers.',
     },
     {
         id: 6,
@@ -128,6 +165,8 @@ export const industries = [
             'Demand forecasting, route optimization, predictive maintenance, and autonomous operations coordination.',
         whyItWins:
             'Operational data advantages, geographic network effects, and integration complexity create sustainable moats.',
+        howWeHelp:
+            'We build demand-forecasting and route-optimization systems that turn your operational data into a durable advantage.',
     },
 ];
 

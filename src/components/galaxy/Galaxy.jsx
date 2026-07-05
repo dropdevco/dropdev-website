@@ -199,6 +199,7 @@ export default function Galaxy({
     rotationSpeed = 0.02,
     autoCenterRepulsion = 0,
     transparent = true,
+    quality = 'high', // 'low' → fewer stars + lower-res canvas (set by the FPS probe)
     ...rest
 }) {
     const ctnDom = useRef(null);
@@ -206,7 +207,7 @@ export default function Galaxy({
     propsRef.current = {
         focal, rotation, starSpeed, density, hueShift, speed, mouseInteraction,
         glowIntensity, saturation, mouseRepulsion, repulsionStrength,
-        twinkleIntensity, rotationSpeed, autoCenterRepulsion, transparent,
+        twinkleIntensity, rotationSpeed, autoCenterRepulsion, transparent, quality,
     };
     const targetMousePos = useRef({ x: 0.5, y: 0.5 });
     const smoothMousePos = useRef({ x: 0.5, y: 0.5 });
@@ -218,10 +219,13 @@ export default function Galaxy({
         const ctn = ctnDom.current;
         const p = propsRef.current;
 
-        // Degrade gracefully on small screens: fewer stars, no cursor tracking
+        // Degrade gracefully on small screens / low-FPS devices: fewer stars,
+        // lower-res canvas, no cursor tracking.
         const isSmall = window.innerWidth < 768;
-        const effDensity = isSmall ? p.density * 0.6 : p.density;
+        const isLow = p.quality === 'low';
+        const effDensity = p.density * (isSmall ? 0.6 : 1) * (isLow ? 0.65 : 1);
         const effMouse = isSmall ? false : p.mouseInteraction;
+        const resScale = isLow ? 0.75 : 1; // render fewer pixels, CSS-stretch to full
 
         let renderer;
         try {
@@ -242,7 +246,9 @@ export default function Galaxy({
         let program;
 
         function resize() {
-            renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
+            renderer.setSize(ctn.offsetWidth * resScale, ctn.offsetHeight * resScale);
+            gl.canvas.style.width = '100%';
+            gl.canvas.style.height = '100%';
             if (program) {
                 program.uniforms.uResolution.value = new Color(
                     gl.canvas.width,
@@ -284,18 +290,25 @@ export default function Galaxy({
 
         const mesh = new Mesh(gl, { geometry, program });
         let animateId;
+        // Internal eased follower of scroll progress. A plain lerp never
+        // overshoots, so the starfield advance is strictly monotonic — it can
+        // glide forward and settle, but never slides backward when you stop.
+        let flightCurrent = 0;
 
         function update(t) {
             animateId = requestAnimationFrame(update);
             const controls = controlsRef?.current;
-            const warp = controls ? Math.min(controls.warp ?? 0, 2.5) : 0;
+
+            const targetFlight = controls ? controls.flight : 0; // 0→1 scroll progress
+            flightCurrent += (targetFlight - flightCurrent) * 0.06;
 
             program.uniforms.uTime.value = t * 0.001;
-            // Time gives a slow ambient drift; scroll "flight" flies the camera
-            // through the star layers; warp (scroll velocity) stretches speed.
+            // Very slow constant ambient drift + gentle scroll-proportional
+            // advance. uSpeed stays CONSTANT: scroll velocity must never
+            // modulate star position (that caused the backward "settle").
             program.uniforms.uStarSpeed.value =
-                (t * 0.001 * p.starSpeed) / 10.0 + (controls ? controls.flight * 1.5 : 0);
-            program.uniforms.uSpeed.value = p.speed * (1 + warp);
+                (t * 0.001 * p.starSpeed) / 40.0 + flightCurrent * 0.6;
+            program.uniforms.uSpeed.value = p.speed;
             if (controls && typeof controls.hue === 'number') {
                 program.uniforms.uHueShift.value = controls.hue;
             }
@@ -313,6 +326,17 @@ export default function Galaxy({
         }
         animateId = requestAnimationFrame(update);
         ctn.appendChild(gl.canvas);
+
+        // Stop rendering entirely while the tab is hidden — no point burning
+        // GPU on an invisible canvas.
+        function handleVisibility() {
+            if (document.hidden) {
+                cancelAnimationFrame(animateId);
+            } else {
+                animateId = requestAnimationFrame(update);
+            }
+        }
+        document.addEventListener('visibilitychange', handleVisibility);
 
         function handleMouseMove(e) {
             const rect = ctn.getBoundingClientRect();
@@ -334,6 +358,7 @@ export default function Galaxy({
         return () => {
             cancelAnimationFrame(animateId);
             window.removeEventListener('resize', resize);
+            document.removeEventListener('visibilitychange', handleVisibility);
             if (effMouse) {
                 ctn.removeEventListener('mousemove', handleMouseMove);
                 ctn.removeEventListener('mouseleave', handleMouseLeave);
