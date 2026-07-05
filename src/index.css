@@ -72,6 +72,15 @@ html {
   }
 }
 
+/* Star cursor replaces the native pointer on precise-pointer devices.
+   Element-level inline styles (e.g. the planet's grab/grabbing) still win. */
+@media (pointer: fine) {
+  html,
+  html * {
+    cursor: none;
+  }
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);

@@ -20,12 +20,12 @@ const HUES = ['#a78bfa', '#4cc2e9', '#34d399', '#f0abfc', '#fbbf24', '#fb7185'];
 
 // Per-ring orbital geometry (units are % of the square stage; center = 50,50).
 const ORBITS = industries.map((ind, i) => {
-    const ax = 15 + i * 6.2; // semi-major axis grows outward
+    const ax = 16 + i * 6.4; // semi-major axis grows outward (max 48, inside viewBox)
     return {
         id: ind.id,
         ax,
-        ay: ax * 0.6, // elliptical
-        period: 22 + i * 4, // outer rings orbit slower (seconds)
+        ay: ax * 0.62, // elliptical
+        period: 70 + i * 14, // slow crawl — easy to aim at (seconds)
         phase: (i / industries.length) * Math.PI * 2, // spread start angles
         hue: HUES[i % HUES.length],
     };
@@ -55,7 +55,7 @@ export default function IndustriesBelt() {
                 const idx = industries.findIndex((ind) => ind.id === cur);
                 return industries[(idx + 1) % industries.length].id;
             });
-        }, 3500);
+        }, 4500);
         return () => clearInterval(t);
     }, [paused, reduced]);
 
@@ -116,14 +116,12 @@ export default function IndustriesBelt() {
                             transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
                             className="rounded-2xl border border-hairline bg-space-raise/70 p-8 backdrop-blur-sm"
                         >
-                            <div className="mb-5 flex items-center gap-3">
-                                <span className="text-3xl" aria-hidden="true">
-                                    {selected.icon}
-                                </span>
-                                <h3 className="text-2xl font-medium tracking-tight" style={{ color: selectedHue }}>
-                                    {selected.name}
-                                </h3>
-                            </div>
+                            <h3
+                                className="mb-5 text-2xl font-medium tracking-tight"
+                                style={{ color: selectedHue }}
+                            >
+                                {selected.name}
+                            </h3>
 
                             {/* What we can do for you — the lead */}
                             <p className="mb-2 font-mono text-[10px] tracking-[0.25em] text-accent uppercase">
@@ -152,7 +150,7 @@ export default function IndustriesBelt() {
 
                 {/* Solar system */}
                 <div className="order-1 flex justify-center lg:order-2">
-                    <div className="relative aspect-square w-full max-w-[440px]">
+                    <div className="relative aspect-square w-full max-w-[640px]">
                         {/* Orbit rings */}
                         <svg
                             viewBox="0 0 100 100"
@@ -174,7 +172,6 @@ export default function IndustriesBelt() {
                                         style={{
                                             vectorEffect: 'non-scaling-stroke',
                                             opacity: active ? 0.9 : 0.5,
-                                            cursor: 'pointer',
                                             transition: 'stroke 0.3s, opacity 0.3s',
                                         }}
                                         onClick={() => pick(o.id)}
@@ -212,14 +209,14 @@ export default function IndustriesBelt() {
                                     onClick={() => pick(ind.id)}
                                     aria-label={ind.name}
                                     aria-pressed={active}
-                                    className="absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full"
+                                    className="absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full p-3"
                                     style={{ left: '50%', top: '50%' }}
                                 >
                                     <span
                                         className="block rounded-full transition-all duration-300"
                                         style={{
-                                            width: active ? 18 : 11,
-                                            height: active ? 18 : 11,
+                                            width: active ? 22 : 14,
+                                            height: active ? 22 : 14,
                                             background: hue,
                                             boxShadow: active
                                                 ? `0 0 14px 3px ${hue}, 0 0 4px 1px #fff`

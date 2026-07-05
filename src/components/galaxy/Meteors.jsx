@@ -64,7 +64,7 @@ export default function Meteors() {
     useEffect(() => {
         if (reduced) return;
         const schedule = (first) => {
-            const delay = first ? 4000 : 9000 + Math.random() * 9000;
+            const delay = first ? 4000 : 7000 + Math.random() * 7000;
             timerRef.current = setTimeout(() => {
                 spawn();
                 schedule(false);
@@ -99,7 +99,7 @@ export default function Meteors() {
                         initial={{ x: meteor.sx, y: meteor.sy, opacity: 0 }}
                         animate={{ x: meteor.ex, y: meteor.ey, opacity: [0, 1, 1, 0.9] }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 1.6, ease: 'linear' }}
+                        transition={{ duration: 4.5, ease: 'linear' }}
                         onAnimationComplete={() => {
                             activeRef.current = false;
                             setMeteor((m) => (m && m.id === meteor.id ? null : m));
@@ -112,8 +112,8 @@ export default function Meteors() {
                             type="button"
                             aria-label="Crush meteor"
                             onClick={crush}
-                            className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer"
-                            style={{ width: 44, height: 44, borderRadius: '50%' }}
+                            className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
+                            style={{ width: 64, height: 64, borderRadius: '50%' }}
                         >
                             <span className="absolute inset-0 m-auto block h-2 w-2 rounded-full bg-white" style={{ boxShadow: '0 0 10px 2px rgba(167,139,250,0.95), 0 0 22px 6px rgba(76,194,233,0.5)' }} />
                         </button>

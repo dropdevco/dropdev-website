@@ -249,8 +249,15 @@ export default function Orb({
 
         let targetHover = 0;
         let lastTime = 0;
+
+        // Grab-to-spin: drag rotates the planet directly; on release the spin
+        // carries momentum (inertia) that decays; a slow idle auto-spin keeps
+        // the planet alive when untouched.
         let currentRot = 0;
-        const rotationSpeed = 0.3;
+        let grabbing = false;
+        let lastX = 0;
+        let vel = 0;
+        const IDLE_SPIN = 0.05;
 
         const handleMouseMove = (e) => {
             const rect = container.getBoundingClientRect();
@@ -267,6 +274,39 @@ export default function Orb({
         container.addEventListener('mousemove', handleMouseMove);
         container.addEventListener('mouseleave', handleMouseLeave);
 
+        const onPointerDown = (e) => {
+            grabbing = true;
+            lastX = e.clientX;
+            vel = 0;
+            container.style.cursor = 'grabbing';
+            try {
+                container.setPointerCapture(e.pointerId);
+            } catch {
+                /* capture unsupported — drag still works via move events */
+            }
+        };
+        const onPointerMove = (e) => {
+            if (!grabbing) return;
+            const dx = e.clientX - lastX;
+            lastX = e.clientX;
+            const d = dx * 0.005;
+            currentRot += d;
+            vel = vel * 0.7 + d * 0.3; // smoothed release velocity
+        };
+        const onPointerUp = () => {
+            grabbing = false;
+            container.style.cursor = 'grab';
+        };
+
+        if (!p.paused) {
+            container.style.cursor = 'grab';
+            container.style.touchAction = 'pan-y'; // horizontal drag spins; vertical still scrolls
+            container.addEventListener('pointerdown', onPointerDown);
+            container.addEventListener('pointermove', onPointerMove);
+            container.addEventListener('pointerup', onPointerUp);
+            container.addEventListener('pointercancel', onPointerUp);
+        }
+
         let rafId = null;
         let visible = true;
 
@@ -279,8 +319,10 @@ export default function Orb({
             const effectiveHover = p.forceHoverState ? 1 : targetHover;
             program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;
 
-            if (p.rotateOnHover && effectiveHover > 0.5) {
-                currentRot += dt * rotationSpeed;
+            if (!grabbing) {
+                currentRot += dt * IDLE_SPIN; // idle life
+                currentRot += vel; // released momentum…
+                vel *= 0.94; // …decaying to rest
             }
             program.uniforms.rot.value = currentRot;
 
@@ -321,6 +363,12 @@ export default function Orb({
             window.removeEventListener('resize', resize);
             container.removeEventListener('mousemove', handleMouseMove);
             container.removeEventListener('mouseleave', handleMouseLeave);
+            if (!p.paused) {
+                container.removeEventListener('pointerdown', onPointerDown);
+                container.removeEventListener('pointermove', onPointerMove);
+                container.removeEventListener('pointerup', onPointerUp);
+                container.removeEventListener('pointercancel', onPointerUp);
+            }
             if (gl.canvas.parentNode === container) container.removeChild(gl.canvas);
             gl.getExtension('WEBGL_lose_context')?.loseContext();
         };

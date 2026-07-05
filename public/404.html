@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DropDev</title>
+  <script>
+    // GitHub Pages SPA fallback: stash the requested path and bounce to "/",
+    // where the app restores it (see RedirectHandler in src/App.jsx).
+    sessionStorage.setItem(
+      'spa-redirect',
+      location.pathname + location.search + location.hash
+    );
+    location.replace('/');
+  </script>
+</head>
+<body style="background:#04040a"></body>
+</html>
