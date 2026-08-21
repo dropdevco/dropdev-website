@@ -8,7 +8,7 @@ This is **dropdev.co / www.dropdev.co** — the public marketing website for Dro
 
 **Active.** Last commit: `cf0facc3` — "V3: star cursor, grabbable planets, About page, routing" — 2026-07-05 (per `git log -1`). Current branch: `main`. Working tree is clean (no uncommitted changes at time of writing). No open PRs or CI failures observed.
 
-Sibling repo note: `C:\Users\carlo\OneDrive\Documents\GitHub\dd-website` also exists locally. It is a **separate, differently-stacked project** (package name `react-three-next`, a Next.js/Chakra UI app, `engines.node: 18`, remote `origin` → `CarlosGonzalez0211/dd-website`, `upstream` → `idropdev/dd-website`), last commit "SMS Landing Pgae V1" (2026-02-23). It shares the `idropdev` GitHub org with this repo but is not the same codebase as this Vite/React repo — do not assume code or conventions transfer between them without checking.
+Sibling repo note: a `dd-website` repo also exists locally (checked out alongside this one). It is a **separate, differently-stacked project** (package name `react-three-next`, a Next.js/Chakra UI app, `engines.node: 18`, remote `origin` → `CarlosGonzalez0211/dd-website`, `upstream` → `idropdev/dd-website`), last commit "SMS Landing Pgae V1" (2026-02-23). It shares the `idropdev` GitHub org with this repo but is not the same codebase as this Vite/React repo — do not assume code or conventions transfer between them without checking.
 
 ## 3. Stack
 
