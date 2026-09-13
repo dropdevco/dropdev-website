@@ -79,7 +79,7 @@ export default function Preloader({ onReady }) {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-                <p className="font-mono text-[11px] tracking-[0.35em] text-white/60 uppercase">
+                <p className="label-mono text-white/75">
                     Preparing your experience
                 </p>
                 {/* Progress bar */}

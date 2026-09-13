@@ -5,16 +5,22 @@
   /* Space palette — near-pure-black, never navy */
   --color-space: #04040a;
   --color-space-raise: #0a0a14;
+  /* Top banner sits on its own lifted, violet-tinted band so the logo reads
+     as a mark on a surface instead of dissolving into the black. */
+  --color-banner: #100d20;
 
-  /* Single dominant accent: violet. Cyan as secondary planet-hue variant. */
-  --color-accent: #a78bfa;
+  /* Single dominant accent: violet.
+     Lightened from #a78bfa to #c4b5fd so accent text clears WCAG AA on the
+     near-black background (10.8:1 vs 7.7:1). The deep violet is kept for
+     glows and gradients only, never for text. */
+  --color-accent: #c4b5fd;
   --color-accent-deep: #8b5cf6;
-  --color-accent-dim: rgba(167, 139, 250, 0.35);
-  --color-cyan-planet: #4cc2e9;
+  --color-accent-dim: rgba(196, 181, 253, 0.4);
+  --color-cyan-planet: #7dd3fc;
 
   /* Hairline borders over shadows */
-  --color-hairline: rgba(255, 255, 255, 0.09);
-  --color-hairline-accent: rgba(167, 139, 250, 0.25);
+  --color-hairline: rgba(255, 255, 255, 0.14);
+  --color-hairline-accent: rgba(196, 181, 253, 0.35);
 
   /* Typography: geometric sans + mono instrument labels */
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -99,18 +105,33 @@ body {
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-space); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(167, 139, 250, 0.25);
+  background: rgba(196, 181, 253, 0.35);
   border-radius: 5px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(167, 139, 250, 0.45); }
+::-webkit-scrollbar-thumb:hover { background: rgba(196, 181, 253, 0.6); }
 
-/* Gem-lit text — the bright layer revealed under the capability flashlight */
+/* Gem-lit display type. Reserved for large headings only, never body copy,
+   so the gradient never costs legibility. */
 .gem-text {
-  background-image: linear-gradient(135deg, #ffffff 0%, #c9b8ff 45%, #9fe6ff 100%);
+  background-image: linear-gradient(135deg, #ffffff 0%, #ded3ff 45%, #cdf1ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.45));
+  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.35));
+}
+
+/* Instrument label: the small mono caps used above headings and on data rows.
+   Sized here once so it stays legible everywhere instead of drifting down to
+   9px per section. */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;   /* 13px */
+  line-height: 1.4;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+@media (min-width: 640px) {
+  .label-mono { font-size: 0.875rem; }  /* 14px */
 }
 
 /* Galaxy / orb canvas containers (adapted from ReactBits) */

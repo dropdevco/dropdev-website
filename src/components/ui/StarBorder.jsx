@@ -36,7 +36,7 @@ export default function StarBorder({
                 }}
                 aria-hidden="true"
             />
-            <div className="relative z-10 rounded-full border border-hairline bg-space px-7 py-3.5 text-center font-mono text-sm tracking-wider text-white uppercase">
+            <div className="relative z-10 rounded-full border border-hairline bg-space px-9 py-4 text-center font-mono text-base tracking-wider text-white uppercase">
                 {children}
             </div>
         </Component>

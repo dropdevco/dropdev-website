@@ -38,7 +38,7 @@ export default function Hero() {
         <section ref={ref} className="relative h-[135vh]">
             <motion.div
                 style={reduced ? undefined : { opacity, scale }}
-                className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+                className="sticky top-0 flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 text-center"
             >
                 {/* Distant planet glows drifting behind the title */}
                 <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -53,9 +53,9 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1.2, delay: 0.1 }}
-                    className="mb-6 font-mono text-[11px] tracking-[0.35em] text-accent uppercase"
+                    className="label-mono mb-6 text-accent"
                 >
-                    Drop Dev — Applied AI Studio
+                    Drop Dev · AI Studio
                 </motion.p>
 
                 <motion.h1
@@ -77,10 +77,10 @@ export default function Hero() {
                     initial={{ opacity: 0, y: reduced ? 0 : 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.1, delay: reduced ? 0.2 : 1.1 }}
-                    className="mt-8 max-w-xl text-base leading-relaxed text-white/50 sm:text-lg"
+                    className="mt-8 max-w-2xl text-lg leading-relaxed text-white/75 sm:text-2xl"
                 >
-                    We build OCR pipelines, RAG systems, and local AI that runs entirely inside
-                    your infrastructure — for industries where trust is everything.
+                    We build AI that reads your documents, answers from your own data, and runs
+                    on your own servers.
                 </motion.p>
 
                 {/* Scroll cue */}
@@ -90,7 +90,7 @@ export default function Hero() {
                     transition={{ delay: reduced ? 0.4 : 2, duration: 1 }}
                     className="absolute bottom-10 flex flex-col items-center gap-3"
                 >
-                    <span className="font-mono text-[10px] tracking-[0.3em] text-white/35 uppercase">
+                    <span className="label-mono text-white/60">
                         Scroll to travel
                     </span>
                     <span

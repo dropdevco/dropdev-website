@@ -1,178 +1,145 @@
-// Real Drop Dev copy — carried over from the previous site (src/pages/Home.jsx)
-// and reused verbatim per the redesign brief.
+// All Drop Dev site copy lives here.
+//
+// Writing rules for this file (client feedback, 2026-08):
+//   - Plain words. If a normal person would not say it out loud, rewrite it.
+//   - No em dashes. Use a comma, a period, or "and".
+//   - Short. One idea per sentence.
 
-// The two focus-area "planets". Moons carry a plain-language label plus a
-// one-sentence meaning surfaced on hover/tap.
+// The two things we build. Each gets a "planet" stop on the scroll journey.
 export const planets = [
     {
         id: 'vertical-ai',
-        kicker: 'A world we build',
-        title: 'Vertical AI SaaS',
+        kicker: 'What we build',
+        title: 'AI Built For Your Industry',
         hue: 0, // violet base palette of the orb shader
-        accent: '#a78bfa',
+        accent: '#c4b5fd',
         description:
-            'Purpose-built AI that speaks your industry — its workflows, its language, its rules — instead of a generic model bolted on.',
+            'AI that already knows how your business works, instead of a generic chatbot bolted on the side.',
         moons: [
             {
-                label: 'Domain-trained',
-                meaning: 'Models tuned on your field’s real documents and terminology, not the open web.',
+                label: 'Trained on your field',
+                meaning: 'We train on your real documents and your real terms, not the open internet.',
             },
             {
-                label: 'Fits your workflow',
-                meaning: 'Drops into the tools your team already uses — no rip-and-replace.',
+                label: 'Works with your tools',
+                meaning: 'It fits the software your team already uses. Nothing gets ripped out.',
             },
             {
-                label: 'Compliant by design',
-                meaning: 'Built to meet HIPAA, SOC 2, and industry rules from day one, not patched in later.',
+                label: 'Built to your rules',
+                meaning: 'HIPAA, SOC 2, and your own policies are handled from day one.',
             },
         ],
     },
     {
         id: 'marketplace',
-        kicker: 'A world we build',
+        kicker: 'What we build',
         title: 'Community Marketplaces',
         hue: 60, // rotates the orb palette to blue-cyan/teal (YIQ rotation, computed)
-        accent: '#4cc2e9',
+        accent: '#7dd3fc',
         description:
-            'Platforms that get more valuable as more people join — connecting a community and compounding on its own data.',
+            'A platform that gets more useful every time someone new joins, and keeps a whole community in one place.',
         moons: [
             {
-                label: 'Network effects',
-                meaning: 'Every new participant makes the platform more useful for everyone already on it.',
+                label: 'More people, more value',
+                meaning: 'Every new member makes the platform better for everyone already there.',
             },
             {
-                label: 'Earned trust',
-                meaning: 'Reputation, reviews, and verification that make strangers comfortable transacting.',
+                label: 'Trust built in',
+                meaning: 'Reviews, ratings, and verification, so strangers feel safe doing business.',
             },
             {
-                label: 'Compounding data',
-                meaning: 'Each interaction sharpens matching and pricing — an advantage rivals can’t buy.',
+                label: 'Smarter over time',
+                meaning: 'Every match and every sale teaches the platform to do the next one better.',
             },
         ],
     },
 ];
 
-// The four core AI capabilities — the "engine room" constellation
-export const capabilities = [
+// The four things we are best at. Shown in the "Specialties" section.
+export const specialties = [
     {
         id: 'ocr',
-        icon: '🔍',
-        title: 'OCR & Document Intelligence',
+        title: 'Reading Your Documents',
         description:
-            'Extract structured data from any document—medical records, contracts, invoices—with near-human accuracy at scale.',
-        color: '#a78bfa',
+            'We pull clean, usable data out of your paperwork. Records, contracts, invoices, forms. Thousands at a time.',
+        color: '#c4b5fd',
     },
     {
         id: 'rag',
-        icon: '🧠',
-        title: 'RAG Systems',
+        title: 'AI That Knows Your Business',
         description:
-            'Retrieval-Augmented Generation that grounds AI answers in your proprietary data, eliminating hallucinations and increasing trust.',
-        color: '#4cc2e9',
+            'AI that answers from your own files and records, so you get real answers instead of made up ones.',
+        color: '#7dd3fc',
     },
     {
         id: 'local-rag',
-        icon: '🔒',
-        title: 'Local RAG (On-Premise)',
+        title: 'Private AI On Your Servers',
         description:
-            'Full RAG pipelines that run inside your network—zero data leaves your infrastructure. Ideal for healthcare, legal, and finance.',
-        color: '#34d399',
+            'The same AI search, running inside your own network. Your data never leaves the building.',
+        color: '#6ee7b7',
     },
     {
         id: 'local-ai',
-        icon: '⚡',
-        title: 'Local AI Inference',
+        title: 'AI You Actually Own',
         description:
-            'Deploy open-source LLMs (Llama, Mistral, Gemma) on your own hardware. Complete data sovereignty, no API costs, no lock-in.',
-        color: '#f0abfc',
+            'We set up open AI models on your own hardware. No monthly usage bills, and no getting locked in.',
+        color: '#f5b8ff',
     },
 ];
 
-// The industries orbit — Healthcare listed first per strategy
+// The industries we work in. One short line each, nothing more.
 export const industries = [
     {
         id: 1,
         name: 'Healthcare',
-        icon: '🏥',
-        problemSpace:
-            'Fragmented patient data, inefficient administrative workflows, and lack of personalized care coordination across provider networks.',
-        aiOpportunity:
-            'AI-driven diagnostics, predictive patient outcomes, automated clinical documentation, and intelligent care pathway optimization.',
-        whyItWins:
-            'Regulatory moats, high switching costs, and network effects from aggregated health data create defensible positions.',
         howWeHelp:
-            'We build HIPAA-ready document pipelines and on-prem RAG so clinical data never leaves your network — and automate the paperwork clinicians dread.',
+            'We handle the paperwork clinicians hate, and keep patient data inside your own network.',
     },
     {
         id: 2,
         name: 'Legal',
-        icon: '⚖️',
-        problemSpace:
-            'Time-intensive document review, inconsistent contract analysis, and limited access to legal services for SMBs and individuals.',
-        aiOpportunity:
-            'Automated contract analysis, legal research acceleration, compliance monitoring, and predictive case outcome modeling.',
-        whyItWins:
-            'Trust-based relationships, regulatory requirements, and accumulated case knowledge create sustainable competitive advantages.',
         howWeHelp:
-            'We deploy contract-analysis and legal-research assistants grounded in your own case files, with full citation traceability.',
+            'We read contracts and case files for you, and show you the exact page every answer came from.',
     },
     {
         id: 3,
         name: 'Real Estate',
-        icon: '🏢',
-        problemSpace:
-            'Opaque transaction processes, fragmented property data, and inefficient matching between buyers, sellers, and properties.',
-        aiOpportunity:
-            'Intelligent property valuation, predictive market analytics, automated due diligence, and personalized investment recommendations.',
-        whyItWins:
-            'Transaction data network effects, established trust, and integration with financial systems create strong barriers to entry.',
         howWeHelp:
-            'We build valuation and due-diligence models, plus marketplace platforms that connect every party in a transaction.',
+            'We price properties, speed up due diligence, and connect buyers and sellers in one place.',
     },
     {
         id: 4,
         name: 'Finance',
-        icon: '💰',
-        problemSpace:
-            'Complex compliance requirements, manual underwriting processes, and limited access to sophisticated financial tools for small businesses.',
-        aiOpportunity:
-            'AI-powered risk assessment, automated compliance monitoring, intelligent fraud detection, and personalized financial planning.',
-        whyItWins:
-            'Regulatory moats, trust requirements, and financial data aggregation create winner-take-most dynamics.',
         howWeHelp:
-            'We build risk, fraud, and compliance systems that run locally, so sensitive financial data stays inside your walls.',
+            'We spot risk and fraud, and keep the compliance work running on your own servers.',
     },
     {
         id: 5,
         name: 'Education',
-        icon: '📚',
-        problemSpace:
-            'One-size-fits-all curriculum, limited personalization, and disconnect between education outcomes and workforce needs.',
-        aiOpportunity:
-            'Adaptive learning paths, intelligent tutoring systems, automated assessment, and skills gap analysis with career mapping.',
-        whyItWins:
-            'Learning data network effects, credentialing moats, and employer integration create defensible ecosystem value.',
         howWeHelp:
-            'We build adaptive-learning engines and skills-mapping platforms that link learners, educators, and employers.',
+            'We build lessons that adapt to each student, and connect what they learn to real jobs.',
     },
     {
         id: 6,
         name: 'Logistics',
-        icon: '🚚',
-        problemSpace:
-            'Fragmented supply chains, unpredictable demand patterns, and inefficient last-mile delivery operations.',
-        aiOpportunity:
-            'Demand forecasting, route optimization, predictive maintenance, and autonomous operations coordination.',
-        whyItWins:
-            'Operational data advantages, geographic network effects, and integration complexity create sustainable moats.',
         howWeHelp:
-            'We build demand-forecasting and route-optimization systems that turn your operational data into a durable advantage.',
+            'We forecast demand and plan better routes, using the data you already collect every day.',
     },
 ];
 
 export const contact = {
     email: 'info@dropdev.co',
     phone: '+1 (915) 234-1444',
-    linkedin: 'https://www.linkedin.com/company/dropdev/',
     location: 'El Paso, TX',
 };
+
+// Social profiles shown in the footer. Add a line here to add an icon.
+// `icon` maps to a key in components/SocialIcon.jsx.
+export const socials = [
+    {
+        id: 'linkedin',
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/company/dropdev/',
+        icon: 'linkedin',
+    },
+];

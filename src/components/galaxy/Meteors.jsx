@@ -138,7 +138,7 @@ export default function Meteors() {
                         initial={{ opacity: 0, y: 0 }}
                         animate={{ opacity: [0, 1, 1, 0], y: -18 }}
                         transition={{ duration: 0.9, ease: 'easeOut' }}
-                        className="pointer-events-none absolute -translate-x-1/2 font-mono text-[10px] tracking-[0.2em] text-accent uppercase whitespace-nowrap"
+                        className="pointer-events-none absolute -translate-x-1/2 font-mono text-xs tracking-[0.2em] text-accent uppercase whitespace-nowrap"
                         style={{ left: f.x, top: f.y - 16 }}
                     >
                         +{f.count} star crushed
