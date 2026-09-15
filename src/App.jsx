@@ -6,6 +6,7 @@ import GalaxySite from './GalaxySite';
 import About from './pages/About';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import DataDeletion from './pages/DataDeletion';
 
 // GitHub Pages SPA fallback: public/404.html stashes the requested path in
 // sessionStorage and redirects to "/"; we restore it here after the app boots.
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
+                    <Route path="/data-deletion" element={<DataDeletion />} />
                 </Route>
             </Routes>
         </BrowserRouter>

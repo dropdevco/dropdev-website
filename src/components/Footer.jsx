@@ -10,6 +10,7 @@ import SocialIcon from './SocialIcon';
 const LEGAL = [
     { to: '/privacy', label: 'Privacy Policy' },
     { to: '/terms', label: 'Terms and Conditions' },
+    { to: '/data-deletion', label: 'Data Deletion' },
 ];
 
 export default function Footer() {

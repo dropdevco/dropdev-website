@@ -19,6 +19,64 @@
  *   [label](href)         →  link (internal "#id" or external URL)
  */
 
+// Shared by section 4 of the Privacy Policy and the standalone
+// /data-deletion page, so the two can never drift apart. Meta's app review
+// requires the deletion instructions at a directly reachable URL.
+const DATA_DELETION_BLOCKS = [
+    {
+        type: 'p',
+        text: 'You may request deletion of personal information associated with your DropDev account or services at any time.',
+    },
+    {
+        // NOTE: supplied as "info@dropdev.com", which was a typo.
+        // Drop Dev confirmed .co is the correct address (2026-09-15),
+        // matching every other contact address in this file.
+        type: 'p',
+        text: 'To request deletion of your data, email [info@dropdev.co](mailto:info@dropdev.co?subject=Data%20Deletion%20Request) with the subject "Data Deletion Request" and include the email address associated with your account.',
+    },
+    {
+        type: 'p',
+        text: 'After verifying your request, we will delete or anonymize the personal information associated with your account, except for information we are required to retain for legal, security, or financial recordkeeping purposes.',
+    },
+    {
+        type: 'p',
+        text: 'If you connected DropDev through Facebook, Instagram, or another Meta service, you may also remove DropDev’s access through your Meta account’s Apps and Websites settings.',
+    },
+];
+
+export const dataDeletion = {
+    slug: 'data-deletion',
+    title: 'Data Deletion',
+    updatedLabel: 'Last updated',
+    updated: 'September 15, 2026',
+    intro: [],
+    sections: [
+        {
+            id: 'how-to-request',
+            title: 'How to Request Deletion',
+            blocks: DATA_DELETION_BLOCKS,
+        },
+        {
+            id: 'contact',
+            title: 'Contact Us',
+            blocks: [
+                {
+                    type: 'p',
+                    text: 'If you have questions about a deletion request, contact us at [info@dropdev.co](mailto:info@dropdev.co).',
+                },
+                {
+                    type: 'p',
+                    text: 'DROPDEV LLC\n619 E Nevada Ave\nEl Paso, Texas 79902\nUnited States',
+                },
+                {
+                    type: 'p',
+                    text: 'This page restates section 4 of our [Privacy Policy](/privacy).',
+                },
+            ],
+        },
+    ],
+};
+
 export const privacyPolicy = {
     slug: 'privacy',
     title: 'Privacy Policy',
@@ -176,27 +234,7 @@ export const privacyPolicy = {
         {
             id: 'data-deletion',
             title: '4. Data Deletion',
-            blocks: [
-                {
-                    type: 'p',
-                    text: 'You may request deletion of personal information associated with your DropDev account or services at any time.',
-                },
-                {
-                    // NOTE: supplied as "info@dropdev.com", which was a typo.
-                    // Drop Dev confirmed .co is the correct address (2026-09-15),
-                    // matching every other contact address in this file.
-                    type: 'p',
-                    text: 'To request deletion of your data, email [info@dropdev.co](mailto:info@dropdev.co?subject=Data%20Deletion%20Request) with the subject "Data Deletion Request" and include the email address associated with your account.',
-                },
-                {
-                    type: 'p',
-                    text: 'After verifying your request, we will delete or anonymize the personal information associated with your account, except for information we are required to retain for legal, security, or financial recordkeeping purposes.',
-                },
-                {
-                    type: 'p',
-                    text: 'If you connected DropDev through Facebook, Instagram, or another Meta service, you may also remove DropDev’s access through your Meta account’s Apps and Websites settings.',
-                },
-            ],
+            blocks: DATA_DELETION_BLOCKS,
         },
         {
             id: 'contact',
