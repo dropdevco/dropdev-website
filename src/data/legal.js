@@ -174,8 +174,33 @@ export const privacyPolicy = {
             ],
         },
         {
+            id: 'data-deletion',
+            title: '4. Data Deletion',
+            blocks: [
+                {
+                    type: 'p',
+                    text: 'You may request deletion of personal information associated with your DropDev account or services at any time.',
+                },
+                {
+                    // NOTE: supplied as "info@dropdev.com", which was a typo.
+                    // Drop Dev confirmed .co is the correct address (2026-09-15),
+                    // matching every other contact address in this file.
+                    type: 'p',
+                    text: 'To request deletion of your data, email [info@dropdev.co](mailto:info@dropdev.co?subject=Data%20Deletion%20Request) with the subject "Data Deletion Request" and include the email address associated with your account.',
+                },
+                {
+                    type: 'p',
+                    text: 'After verifying your request, we will delete or anonymize the personal information associated with your account, except for information we are required to retain for legal, security, or financial recordkeeping purposes.',
+                },
+                {
+                    type: 'p',
+                    text: 'If you connected DropDev through Facebook, Instagram, or another Meta service, you may also remove DropDev’s access through your Meta account’s Apps and Websites settings.',
+                },
+            ],
+        },
+        {
             id: 'contact',
-            title: '4. How Can You Contact Us About This Notice?',
+            title: '5. How Can You Contact Us About This Notice?',
             blocks: [
                 {
                     type: 'p',
